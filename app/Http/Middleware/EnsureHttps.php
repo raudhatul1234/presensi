@@ -18,6 +18,15 @@ class EnsureHttps
             return redirect()->secure($request->getRequestUri(), 301);
         }
 
-        return $next($request);
+        $response = $next($request);
+
+        if (config('app.force_https') && $request->secure()) {
+            $response->headers->set(
+                'Strict-Transport-Security',
+                'max-age=31536000; includeSubDomains',
+            );
+        }
+
+        return $response;
     }
 }

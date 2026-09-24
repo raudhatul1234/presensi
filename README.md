@@ -63,6 +63,8 @@ php artisan migrate --force
 
 4. Pastikan domain Railway aktif. `Procfile` sudah tersedia dan aplikasi akan berjalan pada port yang diberikan Railway.
 
+> Catatan: SQLite cocok untuk development lokal. Untuk Railway production, gunakan PostgreSQL/MySQL Railway agar data tidak hilang saat deployment/restart.
+
 `bootstrap/app.php` sudah memproses forwarded proxy Railway/Traefik, memaksa URL generate menjadi HTTPS, dan mencegah mixed content pada asset lokal. Jangan mengubah `APP_URL` menggunakan `http://` pada production.
 
 ## Cara penggunaan

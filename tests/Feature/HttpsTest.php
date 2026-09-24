@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class HttpsTest extends TestCase
 {
+    use RefreshDatabase;
     protected function tearDown(): void
     {
         config(['app.force_https' => false]);
@@ -27,5 +29,14 @@ class HttpsTest extends TestCase
         config(['app.force_https' => true]);
 
         $this->get('/up')->assertOk();
+    }
+
+    public function test_secure_responses_include_hsts_header(): void
+    {
+        config(['app.force_https' => true]);
+
+        $this->get('https://localhost/')
+            ->assertOk()
+            ->assertHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     }
 }
