@@ -1,0 +1,22 @@
+# Protect the application when the project is accidentally exposed from htdocs.
+# The recommended Apache document root is this project's public/ directory.
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Send a request for the project root to the Laravel public directory.
+    RewriteRule ^$ /presensi/public/ [R=301,L]
+
+    # Never expose application internals when the parent htdocs directory is used.
+    RewriteRule ^(?:app|bootstrap|config|database|resources|routes|storage|tests|vendor)(?:/|$) - [F,L,NC]
+    RewriteRule ^(?:artisan|composer\.(?:json|lock)|package(?:-lock)?\.json|phpunit\.xml|README\.md|\.gitignore|\.env(?:\.example)?)$ - [F,L,NC]
+</IfModule>
+
+<IfModule mod_authz_core.c>
+    <FilesMatch "^\.env(?:\.example)?$">
+        Require all denied
+    </FilesMatch>
+</IfModule>

@@ -1,0 +1,11 @@
+# The legacy Google Apps Script implementation is no longer used.
+<IfModule mod_authz_core.c>
+    <Files "script.js">
+        Require all denied
+    </Files>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <Files "script.js">
+        Deny from all
+    </Files>
+</IfModule>
